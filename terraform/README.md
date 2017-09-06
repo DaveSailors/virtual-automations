@@ -13,12 +13,12 @@ git clone https://github.com/DaveSailors/virtual-automations.git
 
 
 where 
-<your ami>  is the source ami id, like ami-de6a5dbe
+```   <your ami>  ```   is the source ami id, like ami-de6a5dbe
 
-<your aws key>  is the AWS access key or ID your using for the script. see IAM console to create one.
+``` <your aws key> ```     is the AWS access key or ID your using for the script. see IAM console to create one.
 
 and 
-<your aws secret key> is the secret key for the access key. 
+```   <your aws secret keya>   ```    is the secret key for the access key. 
 
 
 
