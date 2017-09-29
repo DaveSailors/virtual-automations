@@ -9,12 +9,19 @@ Spins up a running instance from the standard AWS Linux ami and runs a script us
 
 Warning
 
-Don't select the Proceed without a key pair option. If you launch your instance without a key pair, then you can't connect to it.
+Don't Proceed without a key pair. If you launch your instance without a key pair association, then you can't connect to it.
+
+	From the EC2 console, select Key Pairs under Network & Security
+	click on Create Key Pair
+	name the key pair
+        download the private key to your desktop or where ever you want to access the instance from
+	you may need to convert it from .pem to .ppk
+
 
 ### how to access your instance on amazon
 
-
-https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/putty.html?icmpid=docs_ec2_console
+	putty -
+		https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/putty.html?icmpid=docs_ec2_console
 
 
 ### Spack
