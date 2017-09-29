@@ -14,8 +14,8 @@ Don't Proceed without a key pair. If you launch your instance without a key pair
 	From the EC2 console, select Key Pairs under Network & Security
 	click on Create Key Pair
 	name the key pair
-        download the private key to your desktop or where ever you want to access the instance from
-	you may need to convert it from .pem to .ppk
+	download the private key to your desktop or where ever you want to access the instance from
+	you may need to convert it from .pem to .ppk to use some ssh clients
 
 
 ### how to access your instance on amazon
