@@ -4,6 +4,10 @@ provider "aws" {
   region     = "us-west-1"
 }
 
+resource "template_file" "web-userdata" {
+    filename = "user-data.web"
+}
+
 resource "aws_instance" "example" {
   ami = "${var.ami_id}"
   instance_type = "t2.micro"
