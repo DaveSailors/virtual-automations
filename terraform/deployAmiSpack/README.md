@@ -20,8 +20,8 @@ Don't Proceed without a key pair. If you launch your instance without a key pair
 
 ### how to access your instance on amazon
 
-	putty -
-		https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/putty.html?icmpid=docs_ec2_console
+  putty -
+	https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/putty.html?icmpid=docs_ec2_console
 
 
 ### Spack
