@@ -1,7 +1,8 @@
 #!/bin/bash
-date >/tmp/date.txt
-echo Hello >>/tmp/date.txt
-pwd >>/tmp/pwd.txt
-yum list | grep git > /tmp/get.txt
-
+date >/tmp/userdata.log
+echo Hello >>/tmp/userdata.log
+yum list | grep git >> /tmp/userdata.log
+yum -y install git.x86_64 >>/tmp/userdata.log
+yum list | grep git >>/tmp/userdata.log
+git help >>/tmp/userdata.log
 
