@@ -7,10 +7,12 @@ Spins up a running instance from the standard AWS Linux ami and runs a script us
 
 
 
+Warning
+
+Don't select the Proceed without a key pair option. If you launch your instance without a key pair, then you can't connect to it.
 
 ### how to access your instance on amazon
 
-http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EC2_GetStarted.html#ec2-connect-to-instance-linux
 
 https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/putty.html?icmpid=docs_ec2_console
 
