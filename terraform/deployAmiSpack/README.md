@@ -8,13 +8,17 @@ Spins up a running instance from the standard AWS Linux ami and runs a script us
 
 
 
-how to access your instance on amazon:
+### how to access your instance on amazon
+
+http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EC2_GetStarted.html#ec2-connect-to-instance-linux
 
 https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/putty.html?icmpid=docs_ec2_console
 
 
-
 ### Spack
+
+developed and hosted by Lawrence Livermore National Laboratory 
+https://www.llnl.gov/
 
 https://github.com/LLNL/spack
 
