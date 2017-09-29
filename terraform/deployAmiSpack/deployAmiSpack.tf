@@ -9,6 +9,6 @@ resource "aws_instance" "example" {
   ami = "${var.ami_id}"
   instance_type = "t2.micro"
   key_name = "AWS_Auto"
-  user_data = "${file("terraform/userdata.sh")}"
+  user_data = "${file("virtual-automations/terraform/userdata.sh")}"
 }
 
