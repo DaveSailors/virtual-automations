@@ -11,11 +11,12 @@ Spins up a running instance from the standard AWS Linux ami and runs a script us
 
 Don't Proceed without a key pair. If you launch your instance without a key pair association, then you can't connect to it!
 
-	From the EC2 console, select Key Pairs under Network & Security
-	click on Create Key Pair
-	name the key pair - the key name will be what you enter in the <b> key_name </b> field under the <b> resource "aws_instance" "Spack" </b> declaration
-	download the private key to your desktop or where ever you want to access the instance from
-	you may need to convert it from .pem to .ppk to use some ssh clients. See putty link for connecting with ssh
+	- From the EC2 console, select Key Pairs under Network & Security
+	- click on Create Key Pair
+	- name the key pair 
+		- the key name will be what you enter in the <b> key_name </b> field under the <b> resource "aws_instance" "Spack" </b> declaration
+	- download the private key to your desktop or where ever you want to access the instance from. You will need it for the ssh client
+	- you may need to convert it from .pem to .ppk to use some ssh clients. See putty link for connecting with ssh
 
 
 ### how to access your instance on amazon
