@@ -1,4 +1,4 @@
-# deployAmiSpack
+# deployAmiSpack - (a terraform module)
 Spins up a running instance from the standard AWS Linux ami and runs a script using the user_data facility    
  - the script "userdata.sh" is setup to install git then
  	- clone the spack repo into /opt/spack
@@ -7,7 +7,7 @@ Spins up a running instance from the standard AWS Linux ami and runs a script us
 
 
 
-## Warning
+### Warning
 
 Don't Proceed without a key pair. If you launch your instance without a key pair association, then you can't connect to it.
 
