@@ -20,6 +20,10 @@ Don't Proceed without a key pair. If you launch your instance without a key pair
 
 ### how to access your instance on amazon
 
+The default ID of any instance you create will re-use the default ID from the source ami. Here I'm using the default AWS linux instance (as seen in the create instance wizard from the EC2 console).
+So the instance created by this terraform module default user ID will be
+### ec2-user
+
   putty -
 	https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/putty.html?icmpid=docs_ec2_console
 
