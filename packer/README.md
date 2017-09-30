@@ -1,5 +1,10 @@
 # packer
 
+### Installing Packer on your Windows or Linux machine.
+
+https://www.packer.io/docs/install/index.html
+
+### Running with your keys
 
 To run these add the access keys on the command line.
 
