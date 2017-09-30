@@ -1,6 +1,6 @@
 # packer
 
-### Installing Packer on your Windows or Linux machine.
+### Installing Packer on Windows or Linux
 
 https://www.packer.io/docs/install/index.html
 
