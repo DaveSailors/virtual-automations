@@ -16,7 +16,7 @@ Don't Proceed without a key pair. If you launch your instance without a key pair
 - name the key pair 
 	- the key name will be what you enter in the <b> key_name </b> field under the <b> resource "aws_instance" "Spack" </b> declaration
 - download the private key to your desktop or where ever you want to access the instance from. You will need it for the ssh client
-- you may need to convert it from .pem to .ppk to use some ssh clients. See putty link for connecting with ssh
+- you may need to convert it from .pem to .ppk to use some ssh clients. See putty link below for connecting with ssh
 
 
 ### how to access your instance on amazon
