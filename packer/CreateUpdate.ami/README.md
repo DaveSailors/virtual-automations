@@ -1,9 +1,9 @@
 # packer-stuff
 
+To run this
 
-To run these add the access keys on the command line.
+clone the repo 
 
-packer build -var 'aws_access_key=YourAccessKeyHere' -var 'aws_secret_key=YourSecretKeyHere' CreatUpdate.ami.json    
+cd virtual-automations/packer/CreateUpdate.ami/
 
-
-<b>test</b>   
+/usr/local/bin/packer build -var 'aws_access_key=AKIAJBZPH7RHZSKY7ECA' -var 'aws_secret_key=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' CreateUpdate.ami.json
