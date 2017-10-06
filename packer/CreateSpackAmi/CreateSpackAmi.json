@@ -1,0 +1,30 @@
+{
+  "builders": [
+    {
+      "access_key": "{{user `aws_access_key`}}",
+      "ami_name": "JenkinsBuild {{timestamp}}",
+      "instance_type": "t2.micro",
+      "region": "us-west-1",
+      "secret_key": "{{user `aws_secret_key`}}",
+      "source_ami": "ami-3a674d5a",
+      "ssh_pty": "true",
+      "ssh_username": "ec2-user",
+      "type": "amazon-ebs"
+    }
+  ],
+  "post-processors": [],
+  "provisioners": [
+    {
+      "inline": [
+        "sudo yum -y update",
+        "echo HHHHHelo"
+      ],
+      "type": "shell"
+    }
+  ],
+  "variables": {
+    "aws_access_key": "",
+    "aws_secret_key": ""
+  }
+}
+
