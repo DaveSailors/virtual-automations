@@ -16,13 +16,17 @@
   "provisioners": [
     {
       "inline": [
-        "echo Script starting",
+        "echo ----- Script starting",
         "sudo yum -y update",
-        "echo update complete",
+        "echo ----- update complete",
         "sudo yum -y install git.x86_64",
-        "echo git installed trying git help",
-        "git help",
-        "echo Script done"
+        "echo ----- git installed trying git help",
+        "cd /opt;pwd",
+        "echo ----- git installed trying clone",
+        "git clone https://github.com/LLNL/spack.git",
+        "echo ----- testing spack",
+        "spack/bin/spack --help",
+        "echo ----- Script done"
       ],
       "type": "shell"
     }
