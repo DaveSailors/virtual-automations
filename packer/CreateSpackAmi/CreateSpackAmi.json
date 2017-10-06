@@ -17,10 +17,10 @@
     {
       "inline": [
         "sudo yum -y update",
-        "sudo yum -y install git.x86_64"
-        "cd /opt"
-        "sudo git clone https://github.com/LLNL/spack.git"
-        "/bin/spack"
+        "sudo yum -y install git.x86_64",
+        "cd /opt",
+        "sudo git clone https://github.com/LLNL/spack.git",
+        "/bin/spack",
         "echo HHHHHelo"
       ],
       "type": "shell"
