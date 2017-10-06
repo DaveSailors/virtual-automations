@@ -23,7 +23,7 @@
         "echo ----- git installed trying git help",
         "cd /opt;pwd",
         "echo ----- git installed trying clone",
-        "git clone https://github.com/LLNL/spack.git",
+        "sudo git clone https://github.com/LLNL/spack.git",
         "echo ----- testing spack",
         "spack/bin/spack --help",
         "echo ----- Script done"
