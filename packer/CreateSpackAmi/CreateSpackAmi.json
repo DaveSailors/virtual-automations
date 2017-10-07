@@ -16,25 +16,25 @@
   "provisioners": [
     {
       "inline": [
-        "echo ----- Script starting",
+        "echo ******- - Script starting",
         "sudo yum -y update",
-        "echo ----- update complete",
+        "echo ******- - update complete",
         "sudo yum -y install git.x86_64",
-        "echo ----- git installed trying git help",
+        "echo ******- - git installed trying git help",
         "git help",
-        "echo ----- create spack user",
+        "echo ******- - create spack user",
         "sudo useradd spack",
-        "echo ----- test userid",
+        "echo ******- - test userid",
         "sudo su spack -c 'id'",
-        "echo ----- test userid",
+        "echo ******- - test userid",
         "id",
-        "echo ----- GOTO /opt ..",
+        "echo ******- - GOTO /opt ..",
         "cd /opt;pwd",
-        "echo ----- git installed trying clone",
+        "echo ******- - git installed trying clone",
         "sudo git clone https://github.com/LLNL/spack.git",
-        "echo ----- testing spack",
+        "echo ******- - testing spack",
         "sudo spack/bin/spack --help",
-        "echo ----- Script done"
+        "echo ******- - Script done"
       ],
       "type": "shell"
     }
