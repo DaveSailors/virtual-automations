@@ -56,7 +56,7 @@
         "echo ********************************",
         "echo ******- - testing spack",
         "echo ****----------------------------",
-        "sudo su spack -c 'spack/bin/spack help'",
+        "sudo su spack -c 'cd;spack/bin/spack help'",
         "echo ********************************",
         "echo ********************************",
         "echo ******- - Script done",
