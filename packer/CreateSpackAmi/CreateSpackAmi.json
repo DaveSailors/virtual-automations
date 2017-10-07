@@ -25,13 +25,15 @@
         "echo ----- create spack user",
         "sudo useradd spack",
         "echo ----- test userid",
-        "su spack -c id;exit",
+        "sudo su spack -c 'id'",
+        "echo ----- test userid",
         "id",
+        "echo ----- GOTO /opt ..",
         "cd /opt;pwd",
         "echo ----- git installed trying clone",
         "sudo git clone https://github.com/LLNL/spack.git",
         "echo ----- testing spack",
-        "spack/bin/spack --help",
+        "sudo spack/bin/spack --help",
         "echo ----- Script done"
       ],
       "type": "shell"
