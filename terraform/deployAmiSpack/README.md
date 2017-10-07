@@ -5,9 +5,9 @@ Spins up a running instance from the standard AWS Linux ami and runs a script us
  	- installs a couple of modules
 
 
-### Warning
+### You'll need a key pair
 
-Don't Proceed without a key pair. If you launch your instance without a key pair association, then you can't connect to it!
+<b><i>If you launch your instance without a key pair association, then you can't connect to it</i>!</b>
 
 - From the EC2 console, select Key Pairs under Network & Security
 - click on Create Key Pair
