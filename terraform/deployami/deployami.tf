@@ -4,7 +4,7 @@ provider "aws" {
   region     = "us-west-1"
 }
 
-resource "aws_instance" "example" {
+resource "aws_instance" "deployami" {
   ami = "${var.ami_id}"
   instance_type = "t2.micro"
   key_name = "AWS_Auto"
