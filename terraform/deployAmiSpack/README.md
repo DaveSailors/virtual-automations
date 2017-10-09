@@ -19,7 +19,7 @@ Spins up a running instance from the standard AWS Linux ami and runs a script us
 
 ### how to access your instance on amazon
 
-The default ID of any instance you create will re-use the default ID from the source ami. Here I'm using the default AWS linux instance (as seen in the create instance wizard from the EC2 console).
+The default ID of any instance you create will re-use the default ID from the source ami. Here I'm using the default AWS linux ami (as seen in the create instance wizard from the EC2 console).
 So the instance created by this terraform module default user ID will be <b> ec2-user </b>
 
   putty -
