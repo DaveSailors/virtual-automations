@@ -6,4 +6,6 @@ git help >>/tmp/userdata.log 2>&1
 mkdir /opt/spack >>/tmp/userdata.log 2>&1
 cd /opt/spack >>/tmp/userdata.log 2>&1
 git clone https://github.com/LLNL/spack.git >>/tmp/userdata.log 2>&1
+cat /tmp/userdata.log
+
 
