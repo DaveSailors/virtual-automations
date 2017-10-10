@@ -18,7 +18,7 @@ cd /opt/spack >>/tmp/userdata.log 2>&1
 echo "***********************************" >>/tmp/userdata.log 2>&1
 sudo git clone https://github.com/LLNL/spack.git >>/tmp/userdata.log 2>&1
 echo "***********************************" >>/tmp/userdata.log 2>&1
-sudo /opt/spack/spack/bin/spack >>/tmp/userdata.log 2>&1
+sudo /opt/spack/spack/bin/spack help -a >>/tmp/userdata.log 2>&1
 echo "***********************************" >>/tmp/userdata.log 2>&1
 date >>/tmp/userdata.log 2>&1
 echo ...userdata.sh endinging... >>/tmp/userdata.log 2>&1
