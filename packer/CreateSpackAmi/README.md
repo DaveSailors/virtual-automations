@@ -1,5 +1,8 @@
 # CreateSpackAmi
 
+
+### a Packer module
+
 creates a peronal ami from any source linux ami and preloads it with spack  
 
  - runs yum update   
