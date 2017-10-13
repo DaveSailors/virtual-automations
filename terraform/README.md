@@ -1,10 +1,10 @@
 # terraform modules
 
-Installing Terraform
+### Installing Terraform
 
 https://www.terraform.io/intro/getting-started/install.html
 
-to run deployami from the command line
+### to run deployami from the command line
 
 
 terraform init  -var 'ami_id=<your ami>' -var 'access_key=<your aws key>' -var 'secret_key=<your aws secret key>' <path-to-module>
