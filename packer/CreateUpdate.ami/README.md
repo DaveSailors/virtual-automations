@@ -1,3 +1,5 @@
-# CreateUpdate.ami.json
+# CreateUpdate.ami
+
+### a Packer module
 
 
