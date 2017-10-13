@@ -39,7 +39,7 @@ Todd Gamblin, Matthew P. LeGendre, Michael R. Collette, Gregory L. Lee, Adam Moo
 
 
 
-to run deployami from the command line
+### to run deployami from the command line
 
 ```
 git clone https://github.com/DaveSailors/virtual-automations.git
