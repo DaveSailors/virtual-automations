@@ -37,3 +37,25 @@ https://github.com/LLNL/spack
 
 Todd Gamblin, Matthew P. LeGendre, Michael R. Collette, Gregory L. Lee, Adam Moody, Bronis R. de Supinski, and W. Scott Futral. The Spack Package Manager: Bringing Order to HPC Software Chaos. In Supercomputing 2015 (SC’15), Austin, Texas, November 15-20 2015. LLNL-CONF-669890.
 
+
+
+to run deployami from the command line
+
+```
+git clone https://github.com/DaveSailors/virtual-automations.git
+
+/usr/local/bin/terraform init  -var 'ami_id=<your ami>' -var 'access_key=<your aws key>' -var 'secret_key=<your aws secret key>' virtual-automations/terraform/deployami
+/usr/local/bin/terraform plan  -var 'ami_id=<Your ami>' -var 'access_key=<your aws key>' -var 'secret_key=<your aws secret key>' virtual-automations/terraform/deployami
+/usr/local/bin/terraform apply  -var 'ami_id=<Your ami>' -var 'access_key=<your aws key>' -var 'secret_key=<your aws secret key>' virtual-automations/terraform/deployami
+```
+
+
+where
+```   <your ami>  ```   is the source ami id, like ami-de6a5dbe
+
+``` <your aws key> ```     is the AWS access key or ID your using for the script. see IAM console to create one.
+
+and
+```   <your aws secret keya>   ```    is the secret key for the access key.
+
+
