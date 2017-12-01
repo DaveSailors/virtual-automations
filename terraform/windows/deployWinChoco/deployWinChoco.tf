@@ -15,6 +15,6 @@ resource "aws_instance" "Choco" {
     ]
 
 
-  user_data = "${file("deployWinChoco/userdata.bat")}"
+  user_data = "${file("virtual-automations/terraform/windows/deployWinChoco/userdata.bat")}"
 }
 
