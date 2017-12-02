@@ -10,7 +10,7 @@ date /t >>userdatalog\logfile.txt
 
 choco install -y puppet-agent
 
-choco install git.install
+choco install -y git.install
 
 echo  date /t >>userdatalog\logfile.txt
 
