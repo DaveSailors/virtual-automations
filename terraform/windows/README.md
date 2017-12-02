@@ -1,11 +1,7 @@
-# terraform modules - 
-# AWS provider
+# terraform modules -  AWS provider
 
-### Installing Terraform
+### deployWinChoco
 
-https://www.terraform.io/intro/getting-started/install.html
-
-### to run these modules from the command line
 
 
 
