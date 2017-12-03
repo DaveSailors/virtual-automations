@@ -12,7 +12,10 @@ date /t >>\userdatalog\logfile.txt
 choco install -y puppet-agent >>userdatalog\logfile.txt
 
 date /t >>\userdatalog\logfile.txt
-puppet module install puppetlabs-chocolatey --version 3.0.0 
+puppet  >>userdatalog\logfile.txt
+
+date /t >>\userdatalog\logfile.txt
+puppet module install puppetlabs-chocolatey --version 3.0.0 >>userdatalog\logfile.txt
 
 date /t >>\userdatalog\logfile.txt
 
