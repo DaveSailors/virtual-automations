@@ -16,7 +16,7 @@ puppet help  >>\userdatalog\logfile.txt
 
 echo "installing puppet module puppetlabs-chocolatey" >>\userdatalog\logfile.txt
 date /t >>\userdatalog\logfile.txt
-puppet module install puppetlabs-chocolatey --version 3.0.0 >>\userdatalog\logfile.txt
+puppet module install puppetlabs-chocolatey --version 3.0.0 >>\userdatalog\logfile.txt 2>&1
 
 date /t >>\userdatalog\logfile.txt
 
