@@ -15,7 +15,7 @@ setx path "%path%;C:\Program Files\Puppet Labs\Puppet\bin"
 
 echo >>\userdatalog\logfile.txt
 date /t >>\userdatalog\logfile.txt
-puppet help  >>\userdatalog\logfile.txt
+C:\Program Files\Puppet Labs\Puppet\bin\puppet help  >>\userdatalog\logfile.txt
 
 echo  >>\userdatalog\logfile.txt
 echo  "installing puppet module puppetlabs-chocolatey" >>\userdatalog\logfile.txt
