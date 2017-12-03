@@ -11,6 +11,8 @@ date /t >>\userdatalog\logfile.txt
 date /t >>\userdatalog\logfile.txt
 choco install -y puppet-agent >>\userdatalog\logfile.txt
 
+setx path "%path%;C:\Program Files\Puppet Labs\Puppet\bin"
+
 echo >>\userdatalog\logfile.txt
 date /t >>\userdatalog\logfile.txt
 puppet help  >>\userdatalog\logfile.txt
