@@ -1,6 +1,4 @@
-# terraform modules
-
-### AWS Provider
+# terraform modules  - AWS Provider
 
 ### Installing Terraform
 
