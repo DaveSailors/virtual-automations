@@ -1,8 +1,6 @@
 # virtual-automations
 auto-provisioning in virtual environemts
 
-
-	Packer
-		- stuff
+  Hashicorp
+	Packer  
 	Terraform
-		- stuff
