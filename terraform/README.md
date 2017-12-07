@@ -12,7 +12,7 @@ terraform plan  -var 'ami_id=<b>Your ami</b>' -var 'access_key=<b>your aws key</
 terraform apply  -var 'ami_id=<b>Your ami</b>' -var 'access_key=<b>your aws key</b>' -var 'secret_key=<b>your aws secret key</b>' <b>path-to-module</b>
 
 ### AWS Free Tier
-To test this you can use the AWS free tier. Just remember to terminate the instances and degrgister the ami's and it's free.
+To test this you can use the AWS free tier. Just remember to terminate the instances and degrgister the ami's using the console when you're done.
 
 
     https://aws.amazon.com/free/
