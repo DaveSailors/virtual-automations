@@ -11,7 +11,7 @@ An AWS cli script that creates a vpc in a specified region and
 
 To connect to the Bastion Instance:
 
- - From the AWS EC2 user interface select the instance and click on the connect button
+ - From the AWS EC2 user interface select the instance
  - Click on the "Connect" button at the top
  - copy/paste the ssh command onto the command line in the directory with the .pem file 
  -  hit ENTER
