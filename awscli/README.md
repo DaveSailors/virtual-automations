@@ -1,7 +1,7 @@
 # AWS Command Line Interface
 
 
-##VPC-with-Bastion.pl
+## VPC-with-Bastion.pl
 
 An AWS cli script that creates a vpc in a specified region and
  - creates a Linux Bastion host in the vpc 
@@ -11,9 +11,8 @@ An AWS cli script that creates a vpc in a specified region and
 
 To connect to the Bastion Instance:
 
-1. From the AWS EC2 user interface select the instance and click on the connect button
-   - Click on the "Connect" button at the top
-     - copy/paste the ssh command into your work space at the Linux command line and hit <ENTER>
-     - it will use the .pem key file created by the script to authenticate you
-
+ - From the AWS EC2 user interface select the instance and click on the connect button
+ - Click on the "Connect" button at the top
+ - copy/paste the ssh command into your work space at the Linux command line and hit <ENTER>
+ - you should be logged in.. no password is needed with the key.
 
