@@ -288,12 +288,13 @@ for ($i = 0; $i <= $#return; $i++)
   }
 
 
-#------------------------------------
-
-# aws ec2 modify-subnet-attribute --subnet-id $subnet1{SubnetId} --map-public-ip-on-launch
-#------------------------------------
-
 print "\n";
+
+#------------------------------------
+
+# Public IP addresses for the public segment ?  ( I may turn this off )
+#-----
+
 print "set the default to always give a public IP to instances launched into the public subnet\n";
 
 
@@ -301,7 +302,6 @@ $PubIPon = "aws ec2 modify-subnet-attribute --subnet-id $subnet1{SubnetId} --map
 
 print "$PubIPon \n";
 
-#-----
 @return = `$PubIPon`;
 
 for ($i = 0; $i <= $#return; $i++)
@@ -323,34 +323,29 @@ for ($i = 0; $i <= $#return; $i++)
         }
   }
 
+print "\n";
+
+#------------------------------------
 
 
 ##################################
 ##### 
-##### Add SecurityGroups
+##### SecurityGroups
 #####
+##################################
 
+
+
+# Create SG with incoming ssh and http 
 #-----
-#-----
 
-
-
-
-
-
-
-#------------------------------------
-# aws ec2 create-security-group --group-name MySecurityGroup --description \"My security group\" --vpc-id $vpc{VpcId}
-#------------------------------------
-print "\n";
-print "Create a security group with ssh and http open for incoming\n";
+print "Create a security group \n";
 
 
 $SG1cmd = "aws ec2 create-security-group --group-name AutoSG1 --description \"My security group\" --vpc-id $vpc{VpcId}";
 
 print "$SG1cmd \n";
 
-#-----
 @return = `$SG1cmd`;
 
 for ($i = 0; $i <= $#return; $i++)
@@ -373,12 +368,13 @@ for ($i = 0; $i <= $#return; $i++)
   }
 print "SG1 = $SG1{GroupId} \n";
 
-
-
-#------------------------------------
-# aws ec2 authorize-security-group-ingress --group-id $SG1{GroupId} --protocol tcp --port 22 --cidr 71.202.150.0/24
-#------------------------------------
 print "\n";
+
+#------------------------------------
+
+# add incoming ssh to the security group
+#-----
+
 print "Creatng a rule for the bastion security group to allow incoming ssh\n";
 
 
@@ -386,7 +382,6 @@ $SG1Rule1cmd = "aws ec2 authorize-security-group-ingress --group-id $SG1{GroupId
 
 print "$SG1Rule1cmd \n";
 
-#-----
 @return = `$SG1Rule1cmd`;
 
 for ($i = 0; $i <= $#return; $i++)
@@ -409,12 +404,13 @@ for ($i = 0; $i <= $#return; $i++)
   }
 print "SG1Rule1 = $SG1Rule1{GroupId} \n";
 
-
-
-#------------------------------------
-# aws ec2 authorize-security-group-ingress --group-id $SG1{GroupId} --protocol icmp --port 22 --cidr 0.0.0.0/0
-#------------------------------------
 print "\n";
+
+#------------------------------------
+
+# add incoming ping to the security group 
+#-----
+
 print "Creatng a rule for the bastion security group to allow incoming ping\n";
 
 
@@ -444,13 +440,12 @@ for ($i = 0; $i <= $#return; $i++)
         }
   }
 print "SG1Rule2 = $SG1Rule2{GroupId} \n";
-
-
-
-#------------------------------------
-# aws ec2 create-key-pair --key-name $Bastion{key} --query 'KeyMaterial' --output text > MyKeyPair.pem
-#------------------------------------
 print "\n";
+
+#------------------------------------
+
+# Create a key pair for access to the Bastion Host
+#-----
 
 print "Creating $Bastion{keyname} key-pair  running \n";
 
@@ -459,7 +454,6 @@ $GenerateKeycmd = "aws ec2 create-key-pair --key-name $Bastion{keyname} --query 
 
 print "$GenerateKeycmd \n";
 
-#-----
 @return = `$GenerateKeycmd`;
 
 for ($i = 0; $i <= $#return; $i++)
@@ -467,22 +461,20 @@ for ($i = 0; $i <= $#return; $i++)
      chomp($return[$i]);
      print "$return[$i]\n";
   }
-
-
-#------------------------------------
-
-# aws ec2 run-instances --image-id ami-02eada62 --count 1 --instance-type t2.micro --key-name MyKeyPair --security-group-ids $SG1{GroupId} --subnet-id $subnet1{SubnetId}
-#------------------------------------
 print "\n";
-print "Create a running instance \n";
+
+#------------------------------------
+
+# Create a running instance ( Bastion )
+#-----
+
+print "Create Bastion Host \n";
 
 
-#####$CreateInstancecmd = "aws ec2 run-instances --image-id ami-02eada62 --count 1 --instance-type t2.micro --key-name AWS_Auto --security-group-ids $SG1{GroupId} --subnet-id $subnet1{SubnetId}";
 $CreateInstancecmd = "aws ec2 run-instances --image-id ami-02eada62 --count 1 --instance-type t2.micro --key-name $Bastion{keyname} --security-group-ids $SG1{GroupId} --subnet-id $subnet1{SubnetId}";
 
 print "$CreateInstancecmd \n";
 
-#-----
 @return = `$CreateInstancecmd`;
 
 for ($i = 0; $i <= $#return; $i++)
@@ -505,17 +497,22 @@ for ($i = 0; $i <= $#return; $i++)
   }
 print "InstanceId  = $Instance1{InstanceId}\n";
 print "ReservationId  = $Instance1{ReservationId}\n";
+print "\n";
 
 ################################
 ## Sleep while instance comes live.
-print "######## sleeping for x minutes \n";
-sleep 240;
+$sleeptime = 240;
+
+print "######## sleeping for $sleeptime seconds \n";
+sleep $sleeptime;
+
 ################################
 
 #------------------------------------
-# aws ec2 allocate-address --domain vpc --region $region
-#------------------------------------
-print "\n";
+
+# Allocate an Elastic IP
+#-----
+
 print "Allocate an Elastic IP \n";
 
 
@@ -549,13 +546,13 @@ for ($i = 0; $i <= $#return; $i++)
 print "EIP = $EIPbastion{PublicIp} \n";
 print "EIP alloc id = $EIPbastion{AllocationId} \n";
 
-#------------------------------------
-
-
-#------------------------------------
-# aws ec2 associate-address --instance-id $Instance1{InstanceId} --public-ip $EIPbastion{PublicIp} --region $region
-#------------------------------------
 print "\n";
+
+#------------------------------------
+
+# Associate the EIP with the Bastion instance
+#-----
+
 print "Connect Elastic IP \n";
 
 
@@ -596,9 +593,13 @@ for ($i = 0; $i <= $#return; $i++)
 #------------------------------------
 print "\n\n\n";
 print "That\'s it.\n..\n";
+$EIPbastion{PublicIp} =~ s/ //g;
+$connectString = "ssh -i \"$Bastion{keyname}.pem\" ec2-user\@$EIPbastion{PublicIp}";
+print "To connect from linux : \n $connectString \n";
+
+
+
 print "\n\n\n";
 
 exit;
  
-# aws ec2 allocate-address --domain vpc --region $region
-# aws ec2 associate-address --instance-id i-07ffe74c7330ebf53 --public-ip 198.51.100.0
