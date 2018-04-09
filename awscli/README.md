@@ -1,7 +1,7 @@
 # AWS Command Line Interface
 
 
-## VPC-with-Bastion.pl
+### VPC-with-Bastion.pl
 
 An AWS cli script that creates a vpc in a specified region and
  - creates a Linux Bastion host in the vpc 
