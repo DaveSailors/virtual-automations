@@ -14,6 +14,6 @@ To connect to the Bastion Instance:
  - From the AWS EC2 user interface select the instance
  - Click on the "Connect" button at the top
  - copy/paste the ssh command onto the command line in the directory with the .pem file 
- -  hit ENTER
- - you should now be logged ini to the Bastion host at Amazon.. no password is needed with the key.
+ - hit ENTER (no password with the .pem file)
+ - you should now be logged ini to the Bastion host at Amazon
 
