@@ -14,7 +14,6 @@ $vpcCIDR = "155.14.0.0/16";
 $subnet1CIDR = "155.14.1.0/24";
 $subnet2CIDR = "155.14.5.0/24";
 
-
 # Create the VPC
 #-----
 
@@ -60,19 +59,17 @@ for ($i = 0; $i <= $#return; $i++)
      print " - $return[$i]\n";
   }
 
-#------------------------------------
-
 print "\n";
-
+#------------------------------------
 
 # Create Subnets
 #-----
+
 print "Create subnet1 \n";
 
 $CreateSubnet1Cmd = "aws ec2 create-subnet --vpc-id $vpc{VpcId} --cidr-block $subnet1CIDR --output json --region $region";
 print "$CreateSubnet1Cmd \n";
 
-#-----
 @return = `$CreateSubnet1Cmd`;
 
 for ($i = 0; $i <= $#return; $i++)
@@ -94,12 +91,8 @@ for ($i = 0; $i <= $#return; $i++)
         }
   }
 
-
-#------------------------------------
-
-
-#------------------------------------
 print "\n";
+
 print "Create subnet2 \n";
 
 $CreateSubnet2Cmd = "aws ec2 create-subnet --vpc-id $vpc{VpcId} --cidr-block $subnet2CIDR --output json --region $region";
@@ -126,21 +119,20 @@ for ($i = 0; $i <= $#return; $i++)
 
         }
   }
-
-
-#------------------------------------
-
-
-#------------------------------------
-
 print "\n";
-print "Create igw \n";
+
+
+#------------------------------------
+
+# Create Internet Gateway
+#-----
+
+print "Create Internet Gateway (igw) \n";
 
 $CreateGateway = "aws ec2 create-internet-gateway --output json --region $region 2>&1";
 
 print "$CreateGateway \n";
 
-#-----
 @return = `$CreateGateway`;
 
 for ($i = 0; $i <= $#return; $i++)
@@ -161,20 +153,19 @@ for ($i = 0; $i <= $#return; $i++)
 
         }
   }
-
-
-#------------------------------------
-
-
-#------------------------------------
 print "\n";
-print "Attach igw \n";
+
+#------------------------------------
+
+# Attach IGW to the VPC
+#-----
+
+print "Attachng igw \n";
 
 $AttachGateway = "aws ec2 attach-internet-gateway --vpc-id $vpc{VpcId} --internet-gateway-id $IGW{InternetGatewayId} --output json --region $region 2>&1";
 
 print "$AttachGateway \n";
 
-#-----
 @return = `$AttachGateway`;
 
 for ($i = 0; $i <= $#return; $i++)
@@ -195,20 +186,19 @@ for ($i = 0; $i <= $#return; $i++)
 
         }
   }
-
-
-#------------------------------------
-
-
-#------------------------------------
 print "\n";
+
+#------------------------------------
+
+# Create Route Table for the VPC
+#-----
+
 print "Create Route Table\n";
 
 $CreateRouteTable = "aws ec2 create-route-table --vpc-id $vpc{VpcId} --output json --region $region 2>&1";
 
 print "$CreateRouteTable \n";
 
-#-----
 @return = `$CreateRouteTable`;
 
 for ($i = 0; $i <= $#return; $i++)
@@ -229,20 +219,19 @@ for ($i = 0; $i <= $#return; $i++)
 
         }
   }
-
-
-#------------------------------------
-
-
-#------------------------------------
 print "\n";
+
+#------------------------------------
+
+# Create the route to the IGW
+#-----
+
 print "Create Route to gateway\n";
 
 $CreateRouteIGW = "aws ec2 create-route --route-table-id $routeTable{RouteTableId} --destination-cidr-block 0.0.0.0/0 --gateway-id $IGW{InternetGatewayId} --output json --region $region";
 
 print "$CreateRouteIGW \n";
 
-#-----
 @return = `$CreateRouteIGW`;
 
 for ($i = 0; $i <= $#return; $i++)
@@ -263,13 +252,14 @@ for ($i = 0; $i <= $#return; $i++)
 
         }
   }
-
-
-#------------------------------------
-
-#aws ec2 associate-route-table  --subnet-id subnet-b46032ec --route-table-id rtb-c1c8faa6
-#------------------------------------
 print "\n";
+
+
+#------------------------------------
+
+# Associate the Route Table with the subnet to pickup the route to the IGW
+#-----
+
 print "Associate the routing table with a subnet to allow internet access\n";
 
 
@@ -277,9 +267,7 @@ $assocRouteTable = "aws ec2 associate-route-table  --subnet-id $subnet1{SubnetId
 
 print "$assocRouteTable \n";
 
-#-----
 @return = `$assocRouteTable`;
-
 for ($i = 0; $i <= $#return; $i++)
   {
      chomp($return[$i]);
@@ -304,6 +292,7 @@ for ($i = 0; $i <= $#return; $i++)
 
 # aws ec2 modify-subnet-attribute --subnet-id $subnet1{SubnetId} --map-public-ip-on-launch
 #------------------------------------
+
 print "\n";
 print "set the default to always give a public IP to instances launched into the public subnet\n";
 
