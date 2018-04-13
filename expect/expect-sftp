@@ -1,0 +1,10 @@
+#!/usr/bin/expect
+spawn sftp MyUserName@SftpServer.netsolhost.com
+expect "password:"
+send "MyPetFishesName\n"
+expect "sftp>"
+send "cd htdocs/log\r"
+expect "sftp>"
+send "mget * \r"
+expect "sftp>"
+send "quit \r"
