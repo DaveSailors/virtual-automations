@@ -95,6 +95,24 @@ print "$tstamp - $0 starting on $host\n";
                chop($RouteTables[$rtbl]);
                print "\t\t RouteTables  = $RouteTables[$rtbl]\n"
             }
+
+          @ElasticIPs = `aws ec2 describe-addresses --region $Regions[$reg] --output text`;
+          $dispct = $#ElasticIPs + 1;
+          print "\t ElasticIPs = $dispct \n";
+          for ($eip = 0; $eip <= $#ElasticIPs; $eip++)
+            {
+               chop($ElasticIPs[$eip]);
+               print "\t\t Elastic IP's  = $ElasticIPs[$eip]\n"
+            }
+
+          @KeyPairs = `aws ec2 describe-key-pairs --region $Regions[$reg] --output text`;
+          $dispct = $#KeyPairs + 1;
+          print "\t KeyPairs = $dispct \n";
+          for ($kp = 0; $kp <= $#KeyPairs; $kp++)
+            {
+               chop($KeyPairs[$kp]);
+               print "\t\t Key Pairs = $KeyPairs[$kp]\n"
+            }
           
        }
 

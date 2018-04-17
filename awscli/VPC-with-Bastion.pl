@@ -43,7 +43,14 @@ for ($i = 0; $i <= $#return; $i++)
   }
 
 # Put the VPCid in the name of the bastion host key
+
+#### -----
+
 $Bastion{keyname} = "Bastion-$vpc{VpcId}";
+$NAT{keyname} = "NAT-$vpc{VpcId}";
+
+#### -----
+
 #------------------------------------
 
 # Tag the VPC
@@ -190,7 +197,7 @@ print "\n";
 
 #------------------------------------
 
-# Create Route Table for the VPC
+# Create Route Table for IGW
 #-----
 
 print "Create Route Table\n";
@@ -326,6 +333,220 @@ for ($i = 0; $i <= $#return; $i++)
 print "\n";
 
 #------------------------------------
+#------------------------------------
+#------------------------------------
+print "######################## %%%%%%%%%\n";
+#------------------------------------
+#------------------------------------
+#------------------------------------
+
+# Create Route Table for private subnet
+#-----
+
+print "Create Route Table2\n";
+
+$CreateRouteTable2 = "aws ec2 create-route-table --vpc-id $vpc{VpcId} --output json --region $region 2>&1";
+
+print "$CreateRouteTable2 \n";
+
+@return = `$CreateRouteTable2`;
+
+for ($i = 0; $i <= $#return; $i++)
+  {
+     chomp($return[$i]);
+     print "$return[$i]\n";
+     if ((index($return[$i],"\"CreateRouteTable2\"\:") > 0) || (index($return[$i],"\"Tags\"\:") > 0) || (index($return[$i],"\"Associations\"\:") > 0) || (index($return[$i],"\"RouteTableId\"\:") > 0) || (index($return[$i],"\"VpcId\"\:") > 0) || (index($return[$i],"\"PropagatingVgws\"\:") > 0))
+        {
+          $prepedrec = $return[$i];
+          while (substr($prepedrec,0,1) eq ' ')
+            {
+              $prepedrec = substr($prepedrec,1,length($prepedrec));
+            }
+          $prepedrec =~ s/,//g;
+          $prepedrec =~ s/"//g;
+          @record = split(/[:]+/,$prepedrec);
+          $routeTable2{$record[0]} = $record[1];
+
+        }
+  }
+print "\n";
+
+#------------------------------------
+
+# Associate the Route Table with private subnet
+#-----
+
+print "Associate the routing table with private subnet\n";
+
+
+$assocRouteTable2 = "aws ec2 associate-route-table  --subnet-id $subnet2{SubnetId} --route-table-id $routeTable2{RouteTableId} --output json --region $region";
+
+print "$assocRouteTable2 \n";
+
+@return = `$assocRouteTable2`;
+for ($i = 0; $i <= $#return; $i++)
+  {
+     chomp($return[$i]);
+     print "$return[$i]\n";
+     if (index($return[$i],"\"Return\"\:") > 0)
+        {
+          $prepedrec = $return[$i];
+          while (substr($prepedrec,0,1) eq ' ')
+            {
+              $prepedrec = substr($prepedrec,1,length($prepedrec));
+            }
+          $prepedrec =~ s/,//g;
+          $prepedrec =~ s/"//g;
+          @record = split(/[:]+/,$prepedrec);
+          $routePrvate{$record[0]} = $record[1];
+
+        }
+  }
+
+
+print "\n";
+
+#------------------------------------
+
+# Create SG for inbound into NAT
+#-----
+
+print "Create SG to use the NAT \n";
+
+
+$SG2cmd = "aws ec2 create-security-group --group-name AutoSG2 --description \"SG to allow access to the NAT\" --vpc-id $vpc{VpcId}";
+
+print "$SG2cmd \n";
+
+@return = `$SG2cmd`;
+
+for ($i = 0; $i <= $#return; $i++)
+  {
+     chomp($return[$i]);
+     print "$return[$i]\n";
+     if (index($return[$i],"\"GroupId\"\:") > 0)
+        {
+          $prepedrec = $return[$i];
+          while (substr($prepedrec,0,1) eq ' ')
+            {
+              $prepedrec = substr($prepedrec,1,length($prepedrec));
+            }
+          $prepedrec =~ s/,//g;
+          $prepedrec =~ s/"//g;
+          @record = split(/[:]+/,$prepedrec);
+          $SG2{$record[0]} = $record[1];
+
+        }
+  }
+print "SG2 = $SG2{GroupId} \n";
+
+print "\n";
+
+#------------------------------------
+
+# add Rule for incoming to NAT 
+#-----
+
+print "Creatng a rule for the bastion security group to allow incoming ssh\n";
+
+
+$SG2Rule1cmd = "aws ec2 authorize-security-group-ingress --group-id $SG2{GroupId} --protocol all --cidr $subnet2CIDR";
+
+print "$SG2Rule1cmd \n";
+
+@return = `$SG2Rule1cmd`;
+
+for ($i = 0; $i <= $#return; $i++)
+  {
+     chomp($return[$i]);
+     print "$return[$i]\n";
+     if (index($return[$i],"\"GroupId\"\:") > 0)
+        {
+          $prepedrec = $return[$i];
+          while (substr($prepedrec,0,1) eq ' ')
+            {
+              $prepedrec = substr($prepedrec,1,length($prepedrec));
+            }
+          $prepedrec =~ s/,//g;
+          $prepedrec =~ s/"//g;
+          @record = split(/[:]+/,$prepedrec);
+          $SG2{$record[0]} = $record[1];
+
+        }
+  }
+print "SG2Rule1 = $SG2Rule1{GroupId} \n";
+
+print "\n";
+
+#------------------------------------
+
+# Create a key pair for access to the NAT Host
+#-----
+
+print "Creating $NAT{keyname} key-pair  running \n";
+
+
+$GenerateKeycmd = "aws ec2 create-key-pair --key-name $NAT{keyname} --query 'KeyMaterial' --output text > $NAT{keyname}.pem ; chmod 400 $NAT{keyname}.pem ";
+
+print "$GenerateKeycmd \n";
+
+@return = `$GenerateKeycmd`;
+
+for ($i = 0; $i <= $#return; $i++)
+  {
+     chomp($return[$i]);
+     print "$return[$i]\n";
+  }
+print "\n";
+
+#------------------------------------
+
+# Create a running instance for the NAT - Not an AWS managed NAT
+#-----
+
+print "Create NAT Host \n";
+
+
+$CreateNATInstcmd = "aws ec2 run-instances --image-id ami-02eada62 --count 1 --instance-type t2.micro --key-name $NAT{keyname} --security-group-ids $SG1{GroupId} --subnet-id $subnet1{SubnetId}";
+
+print "$CreateNATInstcmd \n";
+
+@return = `$CreateNATInstcmd`;
+
+for ($i = 0; $i <= $#return; $i++)
+  {
+     chomp($return[$i]);
+     print "$return[$i]\n";
+     if ((index($return[$i],"\"ReservationId\"\:") > 0) || (index($return[$i],"\"InstanceId\"\:") > 0))
+        {
+          $prepedrec = $return[$i];
+          while (substr($prepedrec,0,1) eq ' ')
+            {
+              $prepedrec = substr($prepedrec,1,length($prepedrec));
+            }
+          $prepedrec =~ s/,//g;
+          $prepedrec =~ s/"//g;
+          @record = split(/[:]+/,$prepedrec);
+          $NATInst{$record[0]} = $record[1];
+
+        }
+  }
+print "InstanceId  = $NATInst{InstanceId}\n";
+print "ReservationId  = $NATInst{ReservationId}\n";
+print "\n";
+
+################################
+## Sleep while instance comes live.
+$sleeptime = 90;
+
+print "######## sleeping for $sleeptime seconds \n";
+sleep $sleeptime;
+
+################################
+
+#------------------------------------
+
+
 
 
 ##################################
@@ -372,7 +593,7 @@ print "\n";
 
 #------------------------------------
 
-# add incoming ssh to the security group
+# add Rule for incoming ssh 
 #-----
 
 print "Creatng a rule for the bastion security group to allow incoming ssh\n";
@@ -501,7 +722,7 @@ print "\n";
 
 ################################
 ## Sleep while instance comes live.
-$sleeptime = 240;
+$sleeptime = 90;
 
 print "######## sleeping for $sleeptime seconds \n";
 sleep $sleeptime;
