@@ -14,7 +14,17 @@ $vpcCIDR = "155.14.0.0/16";
 $subnet1CIDR = "155.14.1.0/24";
 $subnet2CIDR = "155.14.5.0/24";
 
-# Create the VPC
+
+
+
+
+$NATInst{userdata} = "\"touch /tmp/hello.txt\"";
+$BastionInst{userdata} = "file://BastionUserdataScript.sh";
+
+#------------------------------------
+
+
+# -  Create the VPC
 #-----
 
 $vpcCreateCmd = "aws ec2 create-vpc --output json --cidr-block $vpcCIDR --region $region";
@@ -42,18 +52,8 @@ for ($i = 0; $i <= $#return; $i++)
         }
   }
 
-# Put the VPCid in the name of the bastion host key
-
-#### -----
-
-$Bastion{keyname} = "Bastion-$vpc{VpcId}";
-$NAT{keyname} = "NAT-$vpc{VpcId}";
-
-#### -----
-
 #------------------------------------
-
-# Tag the VPC
+# - Tag the VPC
 #-----
 
 $TagVpcCmd = "aws ec2 create-tags --resources $vpc{VpcId} --tags Key=Name,Value=$vpcName --output json --region $region";
@@ -68,6 +68,60 @@ for ($i = 0; $i <= $#return; $i++)
 
 print "\n";
 #------------------------------------
+#### -----
+
+$Bastion{keyname} = "Bastion-$vpc{VpcId}";
+$NAT{keyname} = "NAT-$vpc{VpcId}";
+
+#------------------------------------
+
+# -  Create a key pair for access to the NAT Host
+#-----
+
+print "Creating $NAT{keyname} key-pair  running \n";
+
+
+$GenerateKeycmd = "aws ec2 create-key-pair --key-name $NAT{keyname} --query 'KeyMaterial' --output text > $NAT{keyname}.pem ; chmod 400 $NAT{keyname}.pem ";
+
+print "$GenerateKeycmd \n";
+
+@return = `$GenerateKeycmd`;
+
+for ($i = 0; $i <= $#return; $i++)
+  {
+     chomp($return[$i]);
+     print "$return[$i]\n";
+  }
+print "\n";
+
+#------------------------------------
+
+#------------------------------------
+
+# - Create a key pair for access to the Bastion Host
+#-----
+
+print "Creating $Bastion{keyname} key-pair  running \n";
+
+
+$GenerateKeycmd = "aws ec2 create-key-pair --key-name $Bastion{keyname} --query 'KeyMaterial' --output text > $Bastion{keyname}.pem ; chmod 400 $Bastion{keyname}.pem ";
+
+print "$GenerateKeycmd \n";
+
+@return = `$GenerateKeycmd`;
+
+for ($i = 0; $i <= $#return; $i++)
+  {
+     chomp($return[$i]);
+     print "$return[$i]\n";
+  }
+print "\n";
+
+#------------------------------------
+
+
+#### -----
+
 
 # Create Subnets
 #-----
@@ -264,7 +318,7 @@ print "\n";
 
 #------------------------------------
 
-# Associate the Route Table with the subnet to pickup the route to the IGW
+# Associate the Route Table with subnet 1 to pickup the route to the IGW
 #-----
 
 print "Associate the routing table with a subnet to allow internet access\n";
@@ -479,26 +533,6 @@ print "SG2Rule1 = $SG2Rule1{GroupId} \n";
 print "\n";
 
 #------------------------------------
-
-# Create a key pair for access to the NAT Host
-#-----
-
-print "Creating $NAT{keyname} key-pair  running \n";
-
-
-$GenerateKeycmd = "aws ec2 create-key-pair --key-name $NAT{keyname} --query 'KeyMaterial' --output text > $NAT{keyname}.pem ; chmod 400 $NAT{keyname}.pem ";
-
-print "$GenerateKeycmd \n";
-
-@return = `$GenerateKeycmd`;
-
-for ($i = 0; $i <= $#return; $i++)
-  {
-     chomp($return[$i]);
-     print "$return[$i]\n";
-  }
-print "\n";
-
 #------------------------------------
 
 # Create a running instance for the NAT - Not an AWS managed NAT
@@ -507,7 +541,7 @@ print "\n";
 print "Create NAT Host \n";
 
 
-$CreateNATInstcmd = "aws ec2 run-instances --image-id ami-02eada62 --count 1 --instance-type t2.micro --key-name $NAT{keyname} --security-group-ids $SG1{GroupId} --subnet-id $subnet1{SubnetId}";
+$CreateNATInstcmd = "aws ec2 run-instances --image-id ami-02eada62 --count 1 --instance-type t2.micro --key-name $NAT{keyname} --security-group-ids $SG1{GroupId} --subnet-id $subnet1{SubnetId} --user-data $NATInst{userdata}";
 
 print "$CreateNATInstcmd \n";
 
@@ -537,7 +571,7 @@ print "\n";
 
 ################################
 ## Sleep while instance comes live.
-$sleeptime = 90;
+$sleeptime = 60;
 
 print "######## sleeping for $sleeptime seconds \n";
 sleep $sleeptime;
@@ -550,8 +584,8 @@ sleep $sleeptime;
 
 
 ##################################
-##### 
-##### SecurityGroups
+#####
+##aws### End of NAT instance
 #####
 ##################################
 
@@ -664,26 +698,6 @@ print "SG1Rule2 = $SG1Rule2{GroupId} \n";
 print "\n";
 
 #------------------------------------
-
-# Create a key pair for access to the Bastion Host
-#-----
-
-print "Creating $Bastion{keyname} key-pair  running \n";
-
-
-$GenerateKeycmd = "aws ec2 create-key-pair --key-name $Bastion{keyname} --query 'KeyMaterial' --output text > $Bastion{keyname}.pem ; chmod 400 $Bastion{keyname}.pem ";
-
-print "$GenerateKeycmd \n";
-
-@return = `$GenerateKeycmd`;
-
-for ($i = 0; $i <= $#return; $i++)
-  {
-     chomp($return[$i]);
-     print "$return[$i]\n";
-  }
-print "\n";
-
 #------------------------------------
 
 # Create a running instance ( Bastion )
@@ -691,8 +705,8 @@ print "\n";
 
 print "Create Bastion Host \n";
 
-
-$CreateInstancecmd = "aws ec2 run-instances --image-id ami-02eada62 --count 1 --instance-type t2.micro --key-name $Bastion{keyname} --security-group-ids $SG1{GroupId} --subnet-id $subnet1{SubnetId}";
+# --user-data (string)
+$CreateInstancecmd = "aws ec2 run-instances --image-id ami-02eada62 --count 1 --instance-type t2.micro --key-name $Bastion{keyname} --security-group-ids $SG1{GroupId} --subnet-id $subnet1{SubnetId} --user-data $BastionInst{userdata}";
 
 print "$CreateInstancecmd \n";
 
@@ -815,8 +829,9 @@ for ($i = 0; $i <= $#return; $i++)
 print "\n\n\n";
 print "That\'s it.\n..\n";
 $EIPbastion{PublicIp} =~ s/ //g;
-$connectString = "ssh -i \"$Bastion{keyname}.pem\" ec2-user\@$EIPbastion{PublicIp}";
-print "To connect from linux : \n $connectString \n";
+$connectBastionString = "ssh -i \"$Bastion{keyname}.pem\" ec2-user\@$EIPbastion{PublicIp}";
+#$connectNATString = "ssh -i \"$NAT{keyname}.pem\" ec2-user\@$EIPbastion{PublicIp}";
+print "To connect from linux : \n $connectBastionString \n";
 
 
 
@@ -824,3 +839,6 @@ print "\n\n\n";
 
 exit;
  
+
+
+

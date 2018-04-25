@@ -43,8 +43,6 @@ print "$tstamp - $0 starting on $host\n";
   @Regions = `aws ec2 describe-regions --output text | cut -f3`;
 
 
-   print "showing stuff ??\n";
-
      for ($reg = 0; $reg <= $#Regions; $reg++)
        {
           chop($Regions[$reg]);
@@ -57,8 +55,10 @@ print "$tstamp - $0 starting on $host\n";
           for ($vpc = 0; $vpc <= $#VPCs; $vpc++)
             {
                chop($VPCs[$vpc]);
-               print "\t\t VPC  = $VPCs[$vpc]\n"
+               print "\t\t VPC  = $VPCs[$vpc]\n";
+               $RegVpc{$Regions[$reg]}[$vpc] = $VPCs[$vpc];
             }
+    goto NEXT;
 
           @Instances = `aws ec2 describe-instances --output text --region $Regions[$reg] --query 'Reservations[].Instances[].[VpcId,InstanceId,State.Name,InstanceType,LaunchTime]'`;
           $dispct = $#Instances + 1;
@@ -114,6 +114,25 @@ print "$tstamp - $0 starting on $host\n";
                print "\t\t Key Pairs = $KeyPairs[$kp]\n"
             }
           
+NEXT:
        }
 
-    
+REPORT:
+print "=============================== Report +++++++++++++++++++++++++==\n";
+
+     for ($reg = 0; $reg <= $#Regions; $reg++)
+       {
+          print "Region = $Regions[$reg]\n";
+          print " $RegVpc{$Regions[$reg]}[0] \n";
+          @parseme = split(/[\t]+/,$RegVpc{$Regions[$reg]}[0]);
+          print "0 $parseme[0] 1 $parseme[1] 2 $parseme[3] 4 $parseme[4]  5 $parseme[5] \n";
+       }
+
+
+exit;
+
+
+  # $RegVpc{$Regions[$reg]}[$vpc] = $VPCs[$vpc];
+
+
+    #
