@@ -39,7 +39,7 @@ for k in D.keys():
 ##print(D['2'])
 
 
-print("/<pre>")
+print("</pre>")
 print("</BODY>\n")
 print("</HTML>\n")
 
